@@ -13,8 +13,10 @@ import static java.time.LocalDateTime.now;
 @Entity
 @Getter
 @Setter
+@Builder
 @EqualsAndHashCode
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "pagamento", schema = "ms_pagamento")
 public class PagamentoEntity {
     @Id

@@ -5,16 +5,17 @@ import br.com.fiap.ms.pagamento.gateway.PagamentoGateway;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class BuscarPagamentoUseCase {
+public class BuscarPagamentosPorPedidoUseCase {
 
     private final PagamentoGateway pagamentoGateway;
 
-    public Pagamento buscarPorId(UUID id) {
-        return pagamentoGateway.buscarPorId(id).orElseThrow(() -> new RuntimeException("Pagamento não encontrado - id: " + id));
+    public List<Pagamento> buscarPagamentosPorPedido(UUID pedidoId) {
+        return pagamentoGateway.buscarPagamentosPorPedido(pedidoId);
     }
 
 }

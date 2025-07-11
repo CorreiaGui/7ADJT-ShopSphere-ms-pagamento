@@ -3,6 +3,7 @@ package br.com.fiap.ms.pagamento.controller;
 import br.com.fiap.ms.pagamento.controller.json.PagamentoBodyRequestJson;
 import br.com.fiap.ms.pagamento.controller.json.PagamentoJson;
 import br.com.fiap.ms.pagamento.domain.Pagamento;
+import br.com.fiap.ms.pagamento.exception.RecursoNaoEncontradoException;
 import br.com.fiap.ms.pagamento.usecase.*;
 import br.com.fiap.ms.pagamento.utils.PagamentoUtils;
 import jakarta.validation.Valid;
@@ -44,6 +45,9 @@ public class PagamentoController {
     public ResponseEntity<List<PagamentoJson>> buscarPagamentosPorPedido(@PathVariable("pedidoId") UUID pedidoId) {
         log.info("Buscando pagamentos do pedido: {}", pedidoId);
         List<Pagamento> pagamentos = buscarPagamentosPorPedidoUseCase.buscarPagamentosPorPedido(pedidoId);
+        if (pagamentos.isEmpty()) {
+            throw new RecursoNaoEncontradoException("Nenhum pagamento encontrado para o pedido ID " + pedidoId);
+        }
         List<PagamentoJson> pagamentosJson = pagamentos.stream().map(PagamentoUtils::convertToPagamentoJson).collect(toList());
         log.info("Pagamentos por pedido encontrados: {}", pagamentosJson);
         return ok(pagamentosJson);
@@ -52,11 +56,8 @@ public class PagamentoController {
     @GetMapping("/{id}")
     public ResponseEntity<PagamentoJson> buscarPagamentoPorId(@PathVariable("id") UUID id) {
         log.info("Buscando pagamento com ID: {}", id);
-        Pagamento pagamento = buscarPagamentoUseCase.buscarPorId(id);
-        if (pagamento == null) {
-            log.error("Pagamento não encontrado com ID: {}", id);
-            return notFound().build();
-        }
+        Pagamento pagamento = buscarPagamentoUseCase.buscarPorId(id)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Pagamento com ID " + id + " não encontrado."));
         log.info("Pagamento encontrado: {}", pagamento);
         PagamentoJson pagamentoJson = convertToPagamentoJson(pagamento);
         log.info("pagamentoJson encontrado: {}", pagamentoJson);
@@ -69,6 +70,9 @@ public class PagamentoController {
 
         log.info("GET | {} | Iniciado busca de pagamentos com paginacao | page: {} size: {} ", V1_PAGAMENTOS, page, size);
         List<Pagamento> pagamentos = buscarPagamentosUseCase.buscarTodosPagamentos(page, size);
+        if (pagamentos.isEmpty()) {
+            throw new RecursoNaoEncontradoException("Nenhum pagamento encontrado.");
+        }
         log.info("GET | {} | Finalizada busca de pagamentos com paginacao | page: {} size: {} produtos: {}", V1_PAGAMENTOS, page, size, pagamentos);
         List<PagamentoJson> pagamentosJson = pagamentos.stream().map(PagamentoUtils::convertToPagamentoJson).toList();
         return ok(pagamentosJson);

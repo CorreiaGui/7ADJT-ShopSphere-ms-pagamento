@@ -18,6 +18,7 @@ public class PagamentoUtils {
                 .formaPagamento(pagamentoEntity.getFormaPagamento())
                 .numeroCartaoCredito(pagamentoEntity.getNumeroCartaoCredito())
                 .valor(pagamentoEntity.getValor())
+                .solicitacaoPagamentoExternoId(pagamentoEntity.getSolicitacaoPagamentoExternoId())
                 .dataCriacao(pagamentoEntity.getDataCriacao())
                 .dataUltimaAlteracao(pagamentoEntity.getDataUltimaAlteracao())
             .build();
@@ -30,6 +31,7 @@ public class PagamentoUtils {
                 pagamento.getFormaPagamento(),
                 pagamento.getNumeroCartaoCredito(),
                 pagamento.getValor(),
+                pagamento.getSolicitacaoPagamentoExternoId(),
                 pagamento.getDataCriacao(),
                 pagamento.getDataUltimaAlteracao()
                 );
@@ -54,6 +56,19 @@ public class PagamentoUtils {
                 .valor(json.valor())
                 .dataCriacao(existente.getDataCriacao())
                 .dataUltimaAlteracao(now())
+                .build();
+    }
+
+    public static PagamentoEntity convertToPagamentoEntity(Pagamento pagamento){
+        return PagamentoEntity.builder()
+                .id(pagamento.getId())
+                .pedidoId(pagamento.getPedidoId())
+                .formaPagamento(pagamento.getFormaPagamento())
+                .numeroCartaoCredito(pagamento.getNumeroCartaoCredito())
+                .valor(pagamento.getValor())
+                .solicitacaoPagamentoExternoId(pagamento.getSolicitacaoPagamentoExternoId())
+                .dataCriacao(pagamento.getDataCriacao())
+                .dataUltimaAlteracao(pagamento.getDataUltimaAlteracao())
                 .build();
     }
 

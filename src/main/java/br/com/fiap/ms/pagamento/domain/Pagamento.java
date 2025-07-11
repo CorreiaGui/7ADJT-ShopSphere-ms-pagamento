@@ -23,6 +23,8 @@ public class Pagamento {
 
     private BigDecimal valor;
 
+    private String solicitacaoPagamentoExternoId;
+
     private LocalDateTime dataCriacao;
 
     private LocalDateTime dataUltimaAlteracao;

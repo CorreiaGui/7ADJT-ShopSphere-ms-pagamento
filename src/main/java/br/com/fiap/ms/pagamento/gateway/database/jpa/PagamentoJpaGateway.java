@@ -32,9 +32,10 @@ public class PagamentoJpaGateway implements PagamentoGateway {
 
     @Override
     public Optional<Pagamento> buscarPorId(UUID id) {
-        var pagamentoEntity = pagamentoRepository.findById(id).orElseThrow(() -> new RuntimeException("Pagamento não encontrado - id: " + id));
-        return ofNullable(PagamentoUtils.convertToPagamento(pagamentoEntity));
+        return pagamentoRepository.findById(id)
+                .map(PagamentoUtils::convertToPagamento);
     }
+
 
     @Override
     public List<Pagamento> buscarTodosPagamentos(int page, int size) {

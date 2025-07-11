@@ -14,6 +14,7 @@ CREATE TABLE pagamento (
     forma_pagamento INTEGER NOT NULL,
     numero_cartao_credito VARCHAR(30) NULL,
     valor NUMERIC(10,2) NOT NULL,
+    solicitacao_pagamento_externo_id VARCHAR(255),
     data_criacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     data_ultima_alteracao TIMESTAMP
 );

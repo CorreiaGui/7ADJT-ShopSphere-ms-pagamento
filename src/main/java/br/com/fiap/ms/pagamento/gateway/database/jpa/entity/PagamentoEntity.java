@@ -20,7 +20,6 @@ import static java.time.LocalDateTime.now;
 @Table(name = "pagamento", schema = "ms_pagamento")
 public class PagamentoEntity {
     @Id
-    @GeneratedValue(strategy = AUTO)
     private UUID id;
 
     @Column(name = "pedido_id", nullable = false)
@@ -34,6 +33,9 @@ public class PagamentoEntity {
 
     @Column(name = "valor", nullable = false)
     private BigDecimal valor;
+
+    @Column(name = "solicitacao_pagamento_externo_id", nullable = true)
+    private String solicitacaoPagamentoExternoId;
 
     @Column(name = "data_criacao", nullable = false)
     private LocalDateTime dataCriacao = now();

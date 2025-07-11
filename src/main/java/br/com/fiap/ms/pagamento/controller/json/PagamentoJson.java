@@ -10,6 +10,7 @@ public record PagamentoJson(
     Integer formaPagamento,
     String numeroCartaoCredito,
     BigDecimal valor,
+    String solicitacaoPagamentoExternoId,
     LocalDateTime dataCriacao,
     LocalDateTime dataUltimaAlteracao
 ) {}

@@ -1,5 +1,7 @@
-package br.com.fiap.shopsphere.ms.pagamento.exception;
+package br.com.fiap.shopsphere.ms.pagamento.controller.handlers;
 
+import br.com.fiap.shopsphere.ms.pagamento.exception.ErroResponse;
+import br.com.fiap.shopsphere.ms.pagamento.exception.RecursoNaoEncontradoException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

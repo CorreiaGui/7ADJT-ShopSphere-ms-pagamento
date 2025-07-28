@@ -25,10 +25,9 @@ class PagamentoExternoMockAdapterTest {
 
         PagamentoExternoMockAdapter adapter = new PagamentoExternoMockAdapter();
 
-        String resultado = adapter.iniciarPagamentoExterno(pagamento);
+        UUID resultado = adapter.iniciarPagamentoExterno(pagamento);
 
         assertNotNull(resultado);
-        assertTrue(resultado.startsWith("mock-transaction-id-"));
-        assertTrue(resultado.contains(pagamento.getId().toString()));
+        assertInstanceOf(UUID.class, resultado);
     }
 }

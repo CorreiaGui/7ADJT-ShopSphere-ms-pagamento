@@ -31,7 +31,7 @@ class BuscarPagamentosUseCaseTest {
                 .formaPagamento(1)
                 .numeroCartaoCredito("1234567890123456")
                 .valor(BigDecimal.TEN)
-                .solicitacaoPagamentoExternoId("sol123")
+                .solicitacaoPagamentoExternoId(UUID.randomUUID())
                 .dataCriacao(LocalDateTime.now())
                 .dataUltimaAlteracao(LocalDateTime.now())
                 .build();

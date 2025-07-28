@@ -34,7 +34,7 @@ public class CriarPagamentoUseCase {
                 .dataCriacao(LocalDateTime.now())
                 .build();
 
-        String idExterno = pagamentoExternoGateway.iniciarPagamentoExterno(pagamento);
+        UUID idExterno = pagamentoExternoGateway.iniciarPagamentoExterno(pagamento);
         pagamento.setSolicitacaoPagamentoExternoId(idExterno);
 
         PagamentoEntity entity = convertToPagamentoEntity(pagamento);

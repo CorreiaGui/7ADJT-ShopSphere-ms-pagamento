@@ -35,6 +35,11 @@ public class PagamentoJpaGateway implements PagamentoGateway {
                 .map(PagamentoUtils::convertToPagamento);
     }
 
+    @Override
+    public Optional<Pagamento> buscarPorIdExterno(UUID id) {
+        return pagamentoRepository.findBySolicitacaoPagamentoExternoId(id)
+                .map(PagamentoUtils::convertToPagamento);
+    }
 
     @Override
     public List<Pagamento> buscarTodosPagamentos(int page, int size) {

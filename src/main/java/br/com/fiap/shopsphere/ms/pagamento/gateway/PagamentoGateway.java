@@ -12,6 +12,8 @@ public interface PagamentoGateway {
 
     Optional<Pagamento> buscarPorId(UUID ID);
 
+    Optional<Pagamento> buscarPorIdExterno(UUID ID);
+
     List<Pagamento> buscarTodosPagamentos(int page, int size);
 
     PagamentoEntity criarPagamento(PagamentoEntity entity);

@@ -22,6 +22,7 @@ class AlterarPagamentoUseCaseTest {
     private AlterarPagamentoUseCase useCase;
 
     private UUID pagamentoId;
+    private UUID pagamentoExternoId;
     private UUID pedidoId;
     private Pagamento pagamentoExistente;
     private PagamentoBodyRequestJson jsonRequest;
@@ -32,6 +33,7 @@ class AlterarPagamentoUseCaseTest {
         useCase = new AlterarPagamentoUseCase(gateway); // ✔️ corrigido
 
         pagamentoId = UUID.randomUUID();
+        pagamentoExternoId = UUID.randomUUID();
         pedidoId = UUID.randomUUID();
 
         pagamentoExistente = Pagamento.builder()
@@ -40,7 +42,7 @@ class AlterarPagamentoUseCaseTest {
                 .formaPagamento(1)
                 .numeroCartaoCredito("1234567890123456")
                 .valor(BigDecimal.TEN)
-                .solicitacaoPagamentoExternoId("sol123")
+                .solicitacaoPagamentoExternoId(pagamentoExternoId)
                 .dataCriacao(LocalDateTime.now())
                 .dataUltimaAlteracao(LocalDateTime.now())
                 .build();

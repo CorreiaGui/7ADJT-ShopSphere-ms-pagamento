@@ -30,6 +30,8 @@ public class PagamentoController {
 
     private final BuscarPagamentoUseCase buscarPagamentoUseCase;
 
+    private final BuscarPagamentoPorIdExternoUseCase buscarPagamentoPorIdExternoUseCase;
+
     private final BuscarPagamentosUseCase buscarPagamentosUseCase;
 
     private final BuscarPagamentosPorPedidoUseCase buscarPagamentosPorPedidoUseCase;
@@ -58,6 +60,17 @@ public class PagamentoController {
         Pagamento pagamento = buscarPagamentoUseCase.buscarPorId(id)
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Pagamento com ID " + id + " não encontrado."));
         log.info("Pagamento encontrado: {}", pagamento);
+        PagamentoJson pagamentoJson = convertToPagamentoJson(pagamento);
+        log.info("pagamentoJson encontrado: {}", pagamentoJson);
+        return ok(pagamentoJson);
+    }
+
+    @GetMapping("/pagamento-externo/{id}")
+    public ResponseEntity<PagamentoJson> buscarPagamentoPorIdExterno(@PathVariable("id") UUID id) {
+        log.info("Buscando pagamento com ID externo: {}", id);
+        Pagamento pagamento = buscarPagamentoPorIdExternoUseCase.buscarPorIdExterno(id)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Pagamento externo com ID " + id + " não encontrado."));
+        log.info("Pagamento externo encontrado: {}", pagamento);
         PagamentoJson pagamentoJson = convertToPagamentoJson(pagamento);
         log.info("pagamentoJson encontrado: {}", pagamentoJson);
         return ok(pagamentoJson);

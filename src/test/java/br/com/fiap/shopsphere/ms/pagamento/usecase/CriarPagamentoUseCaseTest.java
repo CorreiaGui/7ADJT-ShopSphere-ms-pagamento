@@ -21,6 +21,7 @@ class CriarPagamentoUseCaseTest {
     private CriarPagamentoUseCase useCase;
 
     private UUID pedidoId;
+    private UUID pagamentoExternoId;
     private PagamentoBodyRequestJson bodyRequest;
     private PagamentoEntity entityEsperada;
 
@@ -31,6 +32,7 @@ class CriarPagamentoUseCaseTest {
         useCase = new CriarPagamentoUseCase(pagamentoGateway, pagamentoExternoGateway);
 
         pedidoId = UUID.randomUUID();
+        pagamentoExternoId = UUID.randomUUID();
 
         bodyRequest = new PagamentoBodyRequestJson(
                 pedidoId,
@@ -45,20 +47,23 @@ class CriarPagamentoUseCaseTest {
                 .formaPagamento(1)
                 .numeroCartaoCredito("1234567890123456")
                 .valor(BigDecimal.valueOf(99.99))
-                .solicitacaoPagamentoExternoId("ext123")
+                .solicitacaoPagamentoExternoId(pagamentoExternoId)
                 .build();
     }
 
     @Test
     void deveCriarPagamentoComSucesso() {
-        when(pagamentoExternoGateway.iniciarPagamentoExterno(any(Pagamento.class))).thenReturn("ext123");
-        when(pagamentoGateway.criarPagamento(any(PagamentoEntity.class))).thenReturn(entityEsperada);
+        when(pagamentoExternoGateway.iniciarPagamentoExterno(any(Pagamento.class)))
+                .thenReturn(pagamentoExternoId); // usa o UUID já criado no setup
+
+        when(pagamentoGateway.criarPagamento(any(PagamentoEntity.class)))
+                .thenReturn(entityEsperada);
 
         PagamentoEntity result = useCase.criarPagamento(bodyRequest);
 
         assertNotNull(result);
         assertEquals(entityEsperada.getId(), result.getId());
-        assertEquals("ext123", result.getSolicitacaoPagamentoExternoId());
+        assertEquals(pagamentoExternoId, result.getSolicitacaoPagamentoExternoId());
         verify(pagamentoGateway).criarPagamento(any(PagamentoEntity.class));
         verify(pagamentoExternoGateway).iniciarPagamentoExterno(any(Pagamento.class));
     }

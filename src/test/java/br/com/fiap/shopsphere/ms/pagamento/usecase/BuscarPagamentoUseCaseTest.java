@@ -19,6 +19,7 @@ class BuscarPagamentoUseCaseTest {
     private BuscarPagamentoUseCase useCase;
 
     private UUID pagamentoId;
+    private UUID pagamentoExternoId;
     private Pagamento pagamento;
 
     @BeforeEach
@@ -27,13 +28,14 @@ class BuscarPagamentoUseCaseTest {
         useCase = new BuscarPagamentoUseCase(pagamentoGateway);
 
         pagamentoId = UUID.randomUUID();
+        pagamentoExternoId = UUID.randomUUID();
         pagamento = Pagamento.builder()
                 .id(pagamentoId)
                 .pedidoId(UUID.randomUUID())
                 .formaPagamento(1)
                 .numeroCartaoCredito("1234567890123456")
                 .valor(BigDecimal.TEN)
-                .solicitacaoPagamentoExternoId("sol456")
+                .solicitacaoPagamentoExternoId(pagamentoExternoId)
                 .dataCriacao(LocalDateTime.now())
                 .dataUltimaAlteracao(LocalDateTime.now())
                 .build();

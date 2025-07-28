@@ -18,110 +18,120 @@ import static org.mockito.Mockito.*;
 
 class PagamentoJpaGatewayTest {
 
-    private PagamentoRepository pagamentoRepository;
+    private PagamentoRepository repository;
     private PagamentoJpaGateway gateway;
 
-    private UUID pagamentoId;
-    private UUID pedidoId;
-    private PagamentoEntity entity;
-
     @BeforeEach
-    void setup() {
-        pagamentoRepository = mock(PagamentoRepository.class);
-        gateway = new PagamentoJpaGateway(pagamentoRepository);
-
-        pagamentoId = UUID.randomUUID();
-        pedidoId = UUID.randomUUID();
-
-        entity = PagamentoEntity.builder()
-                .id(pagamentoId)
-                .pedidoId(pedidoId)
-                .formaPagamento(1)
-                .numeroCartaoCredito("1234567890123456")
-                .valor(BigDecimal.TEN)
-                .solicitacaoPagamentoExternoId("sol123")
-                .dataCriacao(LocalDateTime.now())
-                .dataUltimaAlteracao(LocalDateTime.now())
-                .build();
+    void setUp() {
+        repository = mock(PagamentoRepository.class);
+        gateway = new PagamentoJpaGateway(repository);
     }
 
     @Test
-    void deveBuscarPagamentoPorIdComSucesso() {
-        when(pagamentoRepository.findById(pagamentoId)).thenReturn(Optional.of(entity));
+    void deveBuscarPagamentosPorPedido() {
+        UUID pedidoId = UUID.randomUUID();
+        PagamentoEntity entity = criarPagamentoEntity();
+        when(repository.findAllByPedidoId(pedidoId)).thenReturn(List.of(entity));
 
-        Optional<Pagamento> result = gateway.buscarPorId(pagamentoId);
+        List<Pagamento> resultado = gateway.buscarPagamentosPorPedido(pedidoId);
 
-        assertTrue(result.isPresent());
-        assertEquals(pagamentoId, result.get().getId());
+        assertNotNull(resultado);
+        assertEquals(1, resultado.size());
+        assertEquals(entity.getPedidoId(), resultado.get(0).getPedidoId());
     }
 
     @Test
-    void deveRetornarOptionalVazioQuandoPagamentoNaoForEncontrado() {
-        when(pagamentoRepository.findById(pagamentoId)).thenReturn(Optional.empty());
+    void deveBuscarPagamentoPorId() {
+        UUID id = UUID.randomUUID();
+        PagamentoEntity entity = criarPagamentoEntity();
+        when(repository.findById(id)).thenReturn(Optional.of(entity));
 
-        Optional<Pagamento> result = gateway.buscarPorId(pagamentoId);
+        Optional<Pagamento> resultado = gateway.buscarPorId(id);
 
-        assertTrue(result.isEmpty());
+        assertTrue(resultado.isPresent());
+        assertEquals(entity.getId(), resultado.get().getId());
     }
 
     @Test
-    void deveBuscarPagamentosPorPedidoComSucesso() {
-        List<PagamentoEntity> entities = List.of(entity);
-        when(pagamentoRepository.findAllByPedidoId(pedidoId)).thenReturn(entities);
+    void deveBuscarPagamentoPorIdExterno() {
+        UUID id = UUID.randomUUID();
+        PagamentoEntity entity = criarPagamentoEntity();
+        when(repository.findBySolicitacaoPagamentoExternoId(id)).thenReturn(Optional.of(entity));
 
-        List<Pagamento> result = gateway.buscarPagamentosPorPedido(pedidoId);
+        Optional<Pagamento> resultado = gateway.buscarPorIdExterno(id);
 
-        assertEquals(1, result.size());
-        assertEquals(pedidoId, result.get(0).getPedidoId());
+        assertTrue(resultado.isPresent());
+        assertEquals(entity.getSolicitacaoPagamentoExternoId(), resultado.get().getSolicitacaoPagamentoExternoId());
     }
 
     @Test
-    void deveBuscarTodosPagamentosComSucesso() {
+    void deveBuscarTodosPagamentosPaginado() {
+        PagamentoEntity entity = criarPagamentoEntity();
         Page<PagamentoEntity> page = new PageImpl<>(List.of(entity));
-        when(pagamentoRepository.findAll(any(Pageable.class))).thenReturn(page);
+        when(repository.findAll(any(Pageable.class))).thenReturn(page);
 
-        List<Pagamento> result = gateway.buscarTodosPagamentos(0, 10);
+        List<Pagamento> resultado = gateway.buscarTodosPagamentos(0, 10);
 
-        assertEquals(1, result.size());
-        assertEquals(pagamentoId, result.get(0).getId());
+        assertNotNull(resultado);
+        assertEquals(1, resultado.size());
     }
 
     @Test
-    void deveCriarPagamentoComSucesso() {
-        when(pagamentoRepository.save(entity)).thenReturn(entity);
+    void deveCriarPagamento() {
+        PagamentoEntity entity = criarPagamentoEntity();
+        when(repository.save(entity)).thenReturn(entity);
 
-        PagamentoEntity result = gateway.criarPagamento(entity);
+        PagamentoEntity resultado = gateway.criarPagamento(entity);
 
-        assertNotNull(result);
-        assertEquals(pagamentoId, result.getId());
+        assertNotNull(resultado);
+        assertEquals(entity.getId(), resultado.getId());
     }
 
     @Test
-    void deveAlterarPagamentoComSucesso() {
-        when(pagamentoRepository.save(entity)).thenReturn(entity);
+    void deveAlterarPagamento() {
+        PagamentoEntity entity = criarPagamentoEntity();
+        when(repository.save(entity)).thenReturn(entity);
 
-        PagamentoEntity result = gateway.alterarPagamento(entity);
+        PagamentoEntity resultado = gateway.alterarPagamento(entity);
 
-        assertNotNull(result);
-        assertEquals(pagamentoId, result.getId());
+        assertNotNull(resultado);
+        assertEquals(entity.getId(), resultado.getId());
     }
 
     @Test
     void deveExcluirPagamentoComSucesso() {
-        when(pagamentoRepository.existsById(pagamentoId)).thenReturn(true);
+        UUID id = UUID.randomUUID();
+        when(repository.existsById(id)).thenReturn(true);
+        doNothing().when(repository).deleteById(id);
 
-        gateway.excluirPagamento(pagamentoId);
-
-        verify(pagamentoRepository).deleteById(pagamentoId);
+        assertDoesNotThrow(() -> gateway.excluirPagamento(id));
+        verify(repository).deleteById(id);
     }
 
     @Test
-    void deveLancarExcecaoQuandoPagamentoNaoExistirNaExclusao() {
-        when(pagamentoRepository.existsById(pagamentoId)).thenReturn(false);
+    void deveLancarExcecaoAoExcluirPagamentoInexistente() {
+        UUID id = UUID.randomUUID();
+        when(repository.existsById(id)).thenReturn(false);
 
-        RuntimeException exception = assertThrows(RuntimeException.class,
-                () -> gateway.excluirPagamento(pagamentoId));
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> gateway.excluirPagamento(id));
+        assertEquals("Pagamento não encontrado - ID: " + id, ex.getMessage());
+    }
 
-        assertTrue(exception.getMessage().contains("Pagamento não encontrado"));
+    private PagamentoEntity criarPagamentoEntity() {
+        UUID id = UUID.randomUUID();
+        UUID pedidoId = UUID.randomUUID();
+        UUID externoId = UUID.randomUUID();
+        LocalDateTime agora = LocalDateTime.now();
+
+        return PagamentoEntity.builder()
+                .id(id)
+                .pedidoId(pedidoId)
+                .formaPagamento(1)
+                .numeroCartaoCredito("1234567890123456")
+                .valor(BigDecimal.TEN)
+                .solicitacaoPagamentoExternoId(externoId)
+                .dataCriacao(agora)
+                .dataUltimaAlteracao(agora)
+                .build();
     }
 }

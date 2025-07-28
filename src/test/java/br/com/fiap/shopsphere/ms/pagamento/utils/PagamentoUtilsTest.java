@@ -18,6 +18,7 @@ class PagamentoUtilsTest {
     void deveConverterPagamentoEntityParaPagamento() {
         UUID id = UUID.randomUUID();
         UUID pedidoId = UUID.randomUUID();
+        UUID pagamentoExternoId = UUID.fromString("8b539e0d-c767-4aa2-87d7-046c64989bd9");
         LocalDateTime dataCriacao = LocalDateTime.now();
         LocalDateTime ultimaAlteracao = LocalDateTime.now();
 
@@ -27,7 +28,7 @@ class PagamentoUtilsTest {
                 .formaPagamento(1)
                 .numeroCartaoCredito("1234")
                 .valor(BigDecimal.TEN)
-                .solicitacaoPagamentoExternoId("ext123")
+                .solicitacaoPagamentoExternoId(pagamentoExternoId)
                 .dataCriacao(dataCriacao)
                 .dataUltimaAlteracao(ultimaAlteracao)
                 .build();
@@ -39,15 +40,17 @@ class PagamentoUtilsTest {
         assertEquals(pedidoId, pagamento.getPedidoId());
         assertEquals("1234", pagamento.getNumeroCartaoCredito());
         assertEquals(BigDecimal.TEN, pagamento.getValor());
-        assertEquals("ext123", pagamento.getSolicitacaoPagamentoExternoId());
+        assertEquals(pagamentoExternoId, pagamento.getSolicitacaoPagamentoExternoId());
         assertEquals(dataCriacao, pagamento.getDataCriacao());
         assertEquals(ultimaAlteracao, pagamento.getDataUltimaAlteracao());
     }
+
 
     @Test
     void deveConverterPagamentoParaPagamentoJson() {
         UUID id = UUID.randomUUID();
         UUID pedidoId = UUID.randomUUID();
+        UUID pagamentoExternoId = UUID.fromString("0d58abd0-82fb-4707-ba87-31309a4bffcd");
         LocalDateTime criado = LocalDateTime.now();
         LocalDateTime alterado = LocalDateTime.now();
 
@@ -57,7 +60,7 @@ class PagamentoUtilsTest {
                 .formaPagamento(1)
                 .numeroCartaoCredito("4321")
                 .valor(BigDecimal.ONE)
-                .solicitacaoPagamentoExternoId("sol123")
+                .solicitacaoPagamentoExternoId(pagamentoExternoId)
                 .dataCriacao(criado)
                 .dataUltimaAlteracao(alterado)
                 .build();
@@ -70,7 +73,7 @@ class PagamentoUtilsTest {
         assertEquals(1, json.formaPagamento());
         assertEquals("4321", json.numeroCartaoCredito());
         assertEquals(BigDecimal.ONE, json.valor());
-        assertEquals("sol123", json.solicitacaoPagamentoExternoId());
+        assertEquals(pagamentoExternoId, json.solicitacaoPagamentoExternoId());
         assertEquals(criado, json.dataCriacao());
         assertEquals(alterado, json.dataUltimaAlteracao());
     }
@@ -125,6 +128,7 @@ class PagamentoUtilsTest {
     void deveConverterPagamentoParaEntity() {
         UUID id = UUID.randomUUID();
         UUID pedidoId = UUID.randomUUID();
+        UUID pagamentoExternoId = UUID.fromString("8f4c4931-16c7-473f-bb55-e79687ee3071");
         LocalDateTime criado = LocalDateTime.now();
         LocalDateTime alterado = LocalDateTime.now();
 
@@ -134,7 +138,7 @@ class PagamentoUtilsTest {
                 .formaPagamento(4)
                 .numeroCartaoCredito("7777")
                 .valor(BigDecimal.valueOf(77.77))
-                .solicitacaoPagamentoExternoId("sol456")
+                .solicitacaoPagamentoExternoId(pagamentoExternoId)
                 .dataCriacao(criado)
                 .dataUltimaAlteracao(alterado)
                 .build();
@@ -147,7 +151,7 @@ class PagamentoUtilsTest {
         assertEquals(4, entity.getFormaPagamento());
         assertEquals("7777", entity.getNumeroCartaoCredito());
         assertEquals(BigDecimal.valueOf(77.77), entity.getValor());
-        assertEquals("sol456", entity.getSolicitacaoPagamentoExternoId());
+        assertEquals(pagamentoExternoId, entity.getSolicitacaoPagamentoExternoId());
         assertEquals(criado, entity.getDataCriacao());
         assertEquals(alterado, entity.getDataUltimaAlteracao());
     }

@@ -4,13 +4,13 @@ SET search_path TO ms_pagamento;
 -- Inserindo pagamentos
 INSERT INTO pagamento (id, pedido_id, forma_pagamento, numero_cartao_credito, valor, solicitacao_pagamento_externo_id, data_criacao, data_ultima_alteracao)
 VALUES
-    (uuid_generate_v4(), uuid_generate_v4(), 1, '4111111111111111', 150.00, 'mock_id_pagamento_externo_1234567898', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (uuid_generate_v4(), uuid_generate_v4(), 2, NULL, 89.90, 'mock_id_pagamento_externo_1234567898',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (uuid_generate_v4(), uuid_generate_v4(), 1, '5500000000000004', 299.99, 'mock_id_pagamento_externo_1234567898',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (uuid_generate_v4(), uuid_generate_v4(), 3, NULL, 59.50, 'mock_id_pagamento_externo_1234567898',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (uuid_generate_v4(), uuid_generate_v4(), 1, '4111111111111111', 399.00, 'mock_id_pagamento_externo_1234567898',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (uuid_generate_v4(), uuid_generate_v4(), 2, NULL, 120.00, 'mock_id_pagamento_externo_1234567898',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (uuid_generate_v4(), uuid_generate_v4(), 1, '6011000000000004', 200.25, 'mock_id_pagamento_externo_1234567898',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (uuid_generate_v4(), uuid_generate_v4(), 3, NULL, 75.00, 'mock_id_pagamento_externo_1234567898',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (uuid_generate_v4(), uuid_generate_v4(), 1, '3530111333300000', 180.40, 'mock_id_pagamento_externo_1234567898',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    (uuid_generate_v4(), uuid_generate_v4(), 2, NULL, 50.00, 'mock_id_pagamento_externo_1234567898',CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+    (uuid_generate_v4(), uuid_generate_v4(), 1, '4111111111111111', 150.00, uuid_generate_v4(), CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (uuid_generate_v4(), uuid_generate_v4(), 2, NULL, 89.90, uuid_generate_v4(),CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (uuid_generate_v4(), uuid_generate_v4(), 1, '5500000000000004', 299.99, uuid_generate_v4(),CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (uuid_generate_v4(), uuid_generate_v4(), 3, NULL, 59.50, uuid_generate_v4(),CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (uuid_generate_v4(), uuid_generate_v4(), 1, '4111111111111111', 399.00, uuid_generate_v4(),CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (uuid_generate_v4(), uuid_generate_v4(), 2, NULL, 120.00, uuid_generate_v4(),CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (uuid_generate_v4(), uuid_generate_v4(), 1, '6011000000000004', 200.25, uuid_generate_v4(),CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (uuid_generate_v4(), uuid_generate_v4(), 3, NULL, 75.00, uuid_generate_v4(),CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (uuid_generate_v4(), uuid_generate_v4(), 1, '3530111333300000', 180.40, uuid_generate_v4(),CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    (uuid_generate_v4(), uuid_generate_v4(), 2, NULL, 50.00, uuid_generate_v4(),CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);

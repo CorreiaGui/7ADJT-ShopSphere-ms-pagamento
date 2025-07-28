@@ -35,7 +35,7 @@ public class PagamentoEntity {
     private BigDecimal valor;
 
     @Column(name = "solicitacao_pagamento_externo_id", nullable = true)
-    private String solicitacaoPagamentoExternoId;
+    private UUID solicitacaoPagamentoExternoId;
 
     @Column(name = "data_criacao", nullable = false)
     private LocalDateTime dataCriacao = now();
